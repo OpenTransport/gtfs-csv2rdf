@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+/* Pieter Colpaert */
+
+/**
+ * This script reads a zipped GTFS archive and maps it into RDF (text/turtle) in a streaming fashion
+ */
+
+var fs = require('fs');
+var N3 = require('n3');
+var csv = require('csv');
+var unzip = require('unzip');
+var N3Util = N3.util;
+var StopsTransformer = require('./lib/StopsTransformer.js');
+var die = function (msg) {
+  console.log(msg);
+  process.exit();
+}
+
+//check whether the location of the zip has been set and zip exists
+var path = "";
+if (process.argv[2]) {
+  path = process.argv[2];
+}else {
+  die("Give a path towards your gtfs feed as a first argument");
+}
+if (!fs.existsSync(path)) {
+  die(path + " not found");
+}
+
+//get the feedname: the name of the zip file
+var feedname = /(.*\/)?(.*?)\.zip/.exec(path)[2];
+
+//create the writer of turtle file towards stdout
+var streamWriter = new N3.StreamWriter({ 'c': 'http://gtfs.org/feeds/' + feedname });
+streamWriter.pipe(process.stdout);
+
+//Unpack the zip file, and when encountering each file, send it through a transformer
+fs.createReadStream(path)
+  .pipe(unzip.Parse())
+  .on('entry', function (entry) {
+    var fileName = entry.path;
+    var type = entry.type; // 'Directory' or 'File'
+    var size = entry.size;
+
+    if (fileName === "stops.txt") {
+      console.error("Transforming Stops");
+      var st = new StopsTransformer(feedname);
+      entry.pipe(csv.parse({'columns' : true }))
+           .pipe(st)
+           .pipe(streamWriter);
+    } else if (fileName === "") {
+      //others...
+    } else {
+      console.error("draining " + fileName);
+      entry.autodrain();
+    }
+  });
+
