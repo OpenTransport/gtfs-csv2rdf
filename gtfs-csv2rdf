@@ -44,4 +44,3 @@ var streamWriter = new N3.StreamWriter({ 'gtfs': 'http://vocab.gtfs.org/terms#',
 
 streamWriter.pipe(process.stdout);
 mapper(fs.createReadStream(path), feedname, streamWriter);
-
