@@ -15,11 +15,25 @@ var die = function (msg) {
 }
 
 //check whether the location of the zip has been set and zip exists
-var path = "";
+var path = "",
+    version = "",
+    baseuri = "";
 if (process.argv[2]) {
   path = process.argv[2];
 }else {
   die("Give a path towards your gtfs feed as a first argument");
+}
+
+if (process.argv[3]) {
+  version = process.argv[3];
+} else {
+  die("Give the version as a second argument");
+}
+
+if (process.argv[4]) {
+  baseuri = process.argv[4];
+} else {
+  die("Give the base uri as a second argument. Don't forget a trailing slash.");
 }
 
 if (!fs.existsSync(path)) {
@@ -27,7 +41,11 @@ if (!fs.existsSync(path)) {
 }
 
 //get the feedname: the name of the zip file
-var feedname = /(.*\/)?(.*?)\.zip/.exec(path)[2];
+if (/(.*\/)?(.*?)\.zip/.exec(path)) {
+  var feedname = /(.*\/)?(.*?)\.zip/.exec(path)[2];
+} else {
+  die ("Not a zipfile: " + path);
+}
 
 //create the writer of turtle file towards stdout
 var streamWriter = new N3.StreamWriter({ 'gtfs': 'http://vocab.gtfs.org/terms#',
@@ -43,4 +61,9 @@ var streamWriter = new N3.StreamWriter({ 'gtfs': 'http://vocab.gtfs.org/terms#',
                                          'dcat' : 'http://www.w3.org/ns/dcat#'});
 
 streamWriter.pipe(process.stdout);
-mapper(fs.createReadStream(path), feedname, streamWriter);
+
+mapper(fs.createReadStream(path), streamWriter, {
+  feedname: feedname,
+  version :  version,
+  baseuri : baseuri
+});
