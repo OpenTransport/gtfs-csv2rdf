@@ -58,6 +58,7 @@ var streamWriter = new N3.StreamWriter({ 'gtfs': 'http://vocab.gtfs.org/terms#',
                                          'vann' : 'http://purl.org/vocab/vann/',
                                          'skos' : 'http://www.w3.org/2004/02/skos/core#',
                                          'gtfs' : 'http://vocab.gtfs.org/terms#',
+                                         'schema' : "http://schema.org/",
                                          'dcat' : 'http://www.w3.org/ns/dcat#'});
 
 streamWriter.pipe(process.stdout);
