@@ -22,5 +22,4 @@ Stop Times don't have a single URI. It is referred to as the vehicle stopping at
 
 `http://data.gtfs.org/{feed_name}/{feed_version}/stops/{local_id}`
 
-
 The URIs, when being dereferenced will get a HTTP 303 towards the triple pattern fragment at our server with server filled out.
