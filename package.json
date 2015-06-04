@@ -19,8 +19,9 @@
     "url": "https://github.com/OpenTransport/gtfs-csv2rdf/issues"
   },
   "dependencies": {
+    "csv": "~0.4.0",
+    "moment": "^2.10.3",
     "n3": "~0.3.0",
-    "unzip": "~0.1.9",
-    "csv": "~0.4.0"
+    "unzip": "~0.1.9"
   }
 }
