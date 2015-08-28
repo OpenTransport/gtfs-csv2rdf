@@ -1,22 +1,23 @@
 # gtfs-csv2rdf
 
-
-Mapping script which transforms GTFS CSV into GTFS RDF
+Mapping library which transforms GTFS CSV files into GTFS triples using the [GTFS vocabulary](http://vocab.gtfs.org).
 
 ## Use
 
 Requirements:
  * node js
 
-Install using `npm install`
+Install using `npm install gtfs-csv2rdf --save`
 
 ### Command Line
+
+In this case, you can install it globally using `npm install -g gtfs-csv2rdf`
 
 ```bash
 # First argument: path to gtfs
 # Second argument: the version of the feed
 # Third argument: the base URI
-./gtfs-csv2rdf path-to-gtfs.zip 0.1 http://data.gtfs.org/  > gtfsintriples.ttl
+gtfs-csv2rdf path-to-gtfs.zip 0.1 http://data.gtfs.org/  > gtfsintriples.ttl
 ```
 
 ### As a nodejs library
@@ -26,7 +27,7 @@ By example:
 ```javascript
 var fs = require('fs');
 var N3 = require('n3');
-var gtfscsv2rdf = require('./lib/gtfs-csv2rdf.js');
+var gtfs-csv2rdf = require('gtfs-csv2rdf').zipToTriples;
 var path = "/path/to/gtfs.zip";
 if (/(.*\/)?(.*?)\.zip/.exec(path)) {
   var feedname = /(.*\/)?(.*?)\.zip/.exec(path)[2];
@@ -52,3 +53,5 @@ var options = {
 };
 gtfscsv2rdf(fs.createReadStream(path), streamWriter, options);
 ```
+
+For other functions, check out the [main file of the library](https://github.com/OpenTransport/gtfs-csv2rdf/blob/master/lib/gtfs-csv2rdf.js)
