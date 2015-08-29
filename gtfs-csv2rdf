@@ -39,8 +39,8 @@ if (process.argv[4]) {
 }
 
 var type = "turtle";
-if (process.argv[5] && process.argv[5] === 'jsonld') {
-  type = "jsonld";
+if (process.argv[5] && ['jsonld','turtle','ntriples'].indexOf(process.argv[5]) !== -1 ) {
+  type = process.argv[5];
 }
 
 if (!fs.existsSync(path)) {
@@ -67,11 +67,16 @@ var prefixes = { 'gtfs': 'http://vocab.gtfs.org/terms#',
                  'schema' : "http://schema.org/",
                  'dcat' : 'http://www.w3.org/ns/dcat#'};
 
-var streamWriter = new N3.StreamWriter(prefixes);
+var streamWriter;
+
 if (type === "jsonld") {
-  streamWriter = new toJsonLD();
+  streamWriter = (new toJsonLD()).pipe(stringify);
+} else if (type === "ntriples") {
+  streamWriter = new N3.StreamWriter({format: 'N-Triples' });
+} else {
+  streamWriter = new N3.StreamWriter({prefixes: prefixes});
 }
-streamWriter.pipe(stringify).pipe(process.stdout);
+streamWriter.pipe(process.stdout);
 
 mapper(fs.createReadStream(path), streamWriter, {
   feedname: feedname,
