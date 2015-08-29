@@ -1,3 +1,9 @@
+*.zip
+*.ttl
+*.sparql
+*.jsonld
+
+
 # Logs
 logs
 *.log
