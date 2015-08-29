@@ -17,9 +17,9 @@ In this case, you can install it globally using `npm install -g gtfs-csv2rdf`
 # First argument: path to gtfs
 # Second argument: the version of the feed
 # Third argument: the base URI
-gtfs-csv2rdf path-to-gtfs.zip 0.1 http://data.gtfs.org/  > gtfsintriples.ttl
+# Forth argument (optional): the requested format (turtle or jsonld)
+gtfs-csv2rdf path-to-gtfs.zip 0.1 http://data.gtfs.org/ turtle > gtfsintriples.ttl
 ```
-
 ### As a nodejs library
 
 By example:

@@ -7,8 +7,10 @@
 
 var fs = require('fs');
 var N3 = require('n3');
-var N3Util = N3.util;
 var mapper = require('./lib/gtfs-csv2rdf.js').zipToTriples;
+var toJsonLD = require('./lib/gtfs-csv2rdf.js').toJsonLD;
+var stringify = require('JSONStream').stringify(false);
+
 var die = function (msg) {
   console.log(msg);
   process.exit();
@@ -36,6 +38,11 @@ if (process.argv[4]) {
   die("Give the base uri as a second argument. Don't forget a trailing slash.");
 }
 
+var type = "turtle";
+if (process.argv[5] && process.argv[5] === 'jsonld') {
+  type = "jsonld";
+}
+
 if (!fs.existsSync(path)) {
   die(path + " not found");
 }
@@ -57,12 +64,14 @@ var prefixes = { 'gtfs': 'http://vocab.gtfs.org/terms#',
                  'xsd' : 'http://www.w3.org/2001/XMLSchema#',
                  'vann' : 'http://purl.org/vocab/vann/',
                  'skos' : 'http://www.w3.org/2004/02/skos/core#',
-                 'gtfs' : 'http://vocab.gtfs.org/terms#',
                  'schema' : "http://schema.org/",
                  'dcat' : 'http://www.w3.org/ns/dcat#'};
 
 var streamWriter = new N3.StreamWriter(prefixes);
-streamWriter.pipe(process.stdout);
+if (type === "jsonld") {
+  streamWriter = new toJsonLD();
+}
+streamWriter.pipe(stringify).pipe(process.stdout);
 
 mapper(fs.createReadStream(path), streamWriter, {
   feedname: feedname,

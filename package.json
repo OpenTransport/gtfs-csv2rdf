@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Mapping script from gtfs csv to gtfs rdf",
   "main": "lib/gtfs-csv2rdf.js",
-  "bin" : "./gtfs-csv2rdf.js",
+  "bin": "./gtfs-csv2rdf.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,9 +20,11 @@
     "url": "https://github.com/OpenTransport/gtfs-csv2rdf/issues"
   },
   "dependencies": {
+    "JSONStream": "^1.0.4",
     "csv": "~0.4.0",
+    "jsonld": "^0.3.25",
     "moment": "^2.10.3",
-    "n3": "~0.3.0",
+    "n3": "~0.4.0",
     "unzip": "~0.1.9"
   }
 }
