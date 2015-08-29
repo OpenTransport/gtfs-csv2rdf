@@ -34,8 +34,8 @@ if (process.argv[3]) {
 }
 
 var type = "turtle";
-if (process.argv[5] && ['jsonld','turtle','ntriples'].indexOf(process.argv[5]) !== -1 ) {
-  type = process.argv[5];
+if (process.argv[4] && ['jsonld','turtle','ntriples'].indexOf(process.argv[4]) !== -1 ) {
+  type = process.argv[4];
 }
 
 if (!fs.existsSync(path)) {
