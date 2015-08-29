@@ -15,10 +15,9 @@ In this case, you can install it globally using `npm install -g gtfs-csv2rdf`
 
 ```bash
 # First argument: path to gtfs
-# Second argument: the version of the feed
-# Third argument: the base URI
-# Forth argument (optional): the requested format (turtle, ntriples or jsonld)
-gtfs-csv2rdf path-to-gtfs.zip 0.1 http://data.gtfs.org/ turtle > gtfsintriples.ttl
+# Second argument: the base URI
+# Third argument (optional): the requested format (turtle (default), ntriples or jsonld)
+gtfs-csv2rdf path-to-gtfs.zip http://data.gtfs.org/sample-feed/0.1/ turtle > gtfsintriples.ttl
 ```
 ### As a nodejs library
 
@@ -48,8 +47,7 @@ var streamWriter = new N3.StreamWriter({ 'gtfs': 'http://vocab.gtfs.org/terms#',
 streamWriter.pipe(process.stdout);
 var options = {
   feedname : feedname,
-  version : "0.1",
-  baseuri : "http://data.gtfs.org/"
+  baseuri : "http://data.example.org/sample-feed/0.1/"
 };
 gtfscsv2rdf(fs.createReadStream(path), streamWriter, options);
 ```

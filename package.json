@@ -1,6 +1,6 @@
 {
   "name": "gtfs-csv2rdf",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Mapping script from gtfs csv to gtfs rdf",
   "main": "lib/gtfs-csv2rdf.js",
   "bin": "./gtfs-csv2rdf.js",

@@ -2,14 +2,14 @@
 /* Pieter Colpaert */
 
 /**
- * This script reads a zipped GTFS archive and maps it into RDF (text/turtle) in a streaming fashion
+ * This script reads a zipped GTFS archive and maps it into RDF (text/turtle, application/ld+json or N-Triples) in a streaming fashion
  */
 
-var fs = require('fs');
-var N3 = require('n3');
-var mapper = require('./lib/gtfs-csv2rdf.js').zipToTriples;
-var toJsonLD = require('./lib/gtfs-csv2rdf.js').toJsonLD;
-var stringify = require('JSONStream').stringify(false);
+var fs = require('fs'),
+    N3 = require('n3'),
+    mapper = require('./lib/gtfs-csv2rdf.js').zipToTriples,
+    toJsonLD = require('./lib/gtfs-csv2rdf.js').toJsonLD,
+    stringify = require('JSONStream').stringify(false);
 
 var die = function (msg) {
   console.log(msg);
@@ -20,6 +20,7 @@ var die = function (msg) {
 var path = "",
     version = "",
     baseuri = "";
+
 if (process.argv[2]) {
   path = process.argv[2];
 }else {
@@ -27,15 +28,9 @@ if (process.argv[2]) {
 }
 
 if (process.argv[3]) {
-  version = process.argv[3];
+  baseuri = process.argv[3].replace(/\/+$/,'');
 } else {
-  die("Give the version as a second argument");
-}
-
-if (process.argv[4]) {
-  baseuri = process.argv[4];
-} else {
-  die("Give the base uri as a second argument. Don't forget a trailing slash.");
+  die("Give the full base uri as a second argument. We'll append a forward slash ourselves.");
 }
 
 var type = "turtle";
