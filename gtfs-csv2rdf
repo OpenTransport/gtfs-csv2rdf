@@ -8,8 +8,8 @@
 var fs = require('fs'),
     N3 = require('n3'),
     mapper = require('./lib/gtfs-csv2rdf.js').zipToTriples,
-    toJsonLD = require('./lib/gtfs-csv2rdf.js').toJsonLD,
-    stringify = require('JSONStream').stringify(false);
+    TriplesToJSONLDStream = require('jsonld-stream').TriplesToJSONLDStream,
+    JSONLDSerializer = require('jsonld-stream').Serializer;
 
 var die = function (msg) {
   console.log(msg);
@@ -65,13 +65,16 @@ var prefixes = { 'gtfs': 'http://vocab.gtfs.org/terms#',
 var streamWriter;
 
 if (type === "jsonld") {
-  streamWriter = (new toJsonLD()).pipe(stringify);
+  streamWriter = new TriplesToJSONLDStream();
+  streamWriter.pipe(new JSONLDSerializer()).pipe(process.stdout);  
 } else if (type === "ntriples") {
-  streamWriter = new N3.StreamWriter({format: 'N-Triples' });
+  streamWriter = new N3.StreamWriter({format: 'N-Triples'});
+  streamWriter.pipe(process.stdout);
 } else {
   streamWriter = new N3.StreamWriter({prefixes: prefixes});
+  streamWriter.pipe(process.stdout);
 }
-streamWriter.pipe(process.stdout);
+
 
 mapper(fs.createReadStream(path), streamWriter, {
   feedname: feedname,
