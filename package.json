@@ -22,7 +22,7 @@
   "dependencies": {
     "JSONStream": "^1.0.4",
     "csv": "~0.4.0",
-    "jsonld": "^0.3.25",
+    "jsonld": "^1.1.0",
     "jsonld-stream": "^1.0.2",
     "moment": "^2.10.3",
     "n3": "~0.4.0",
