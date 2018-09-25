@@ -1,6 +1,10 @@
 # gtfs-csv2rdf
 
-Mapping library which transforms GTFS CSV files into GTFS triples using the [GTFS vocabulary](http://vocab.gtfs.org).
+[![npm version](https://badge.fury.io/js/gtfs-csv2rdf.svg)](https://badge.fury.io/js/gtfs-csv2rdf)
+
+Mapping library which transforms GTFS CSV files into GTFS triples using the [Linked GTFS vocabulary](http://vocab.gtfs.org).
+
+If you need route planning over Linked Data, then please check out the [Linked Connections framework](https://linkedconnections.org) instead. Transforming GTFS to Linked Data will _not_ return you the data in a format that is useful for route planning.
 
 ## Use
 
